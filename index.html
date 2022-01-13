@@ -62,6 +62,7 @@
           let recordedBlob = new Blob(recordedChunks, { type: 'video/mp4' });
           downloadButton.href = URL.createObjectURL(recordedBlob);
           downloadButton.download = 'RecordedVideo.mp4';
+          downloadButton.click();
         });
       }, false);
       stopButton.addEventListener('click', stopRec, false);
