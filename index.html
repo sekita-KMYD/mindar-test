@@ -19,5 +19,57 @@
         <a-gltf-model rotation="0 0 0" position="0 0 0.1" scale="0.005 0.005 0.005" src="#avatarModel" animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate" />
       </a-entity>
     </a-scene>
+    <div class="footer">
+      <div id="startButton">録画</div>
+      <div id="stopButton">停止</div>
+      <div id="downloadButton">保存</div>
+    </div>
+    <script>
+      const canvas = document.querySelector('canvas');
+      // Optional frames per second argument
+      const stream = canvas.captureStream(25);
+      
+      const options = { mimeType: 'video/mp4' };
+
+      function startRec() {
+        let recorder = new MediaRecorder(stream, options);
+        let data = [];
+
+        recorder.ondataavailable = event => data.push(event.data);
+        recorder.start();
+
+        let stopped = new Promise((resolve, reject) => {
+          recorder.onstop = resolve;
+          recorder.onerror = event => reject(event.name);
+        });
+
+        return stopped.then(() => data);
+      }
+
+      function stopRec() {
+        stream.getTracks().forEach(track => track.stop());
+      }
+
+      const startButton = document.getElementById('startButton');
+      const stopButton = document.getElementById('stopButton');
+      const downloadButton = document.getElementById('downloadButton');
+
+      downloadButton.href = canvas;
+
+      startButton.addEventListener('click', function () {
+        startRec().then(recordedChunks => {
+          let recordedBlob = new Blob(recordedChunks, { type: 'video/mp4' });
+          downloadButton.href = URL.createObjectURL(recordedBlob);
+          downloadButton.download = 'RecordedVideo.mp4';
+        });
+      }, false);
+      stopButton.addEventListener('click', stopRec, false);
+    </script>
+    <style>
+      .footer {
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
   </body>
 </html>
