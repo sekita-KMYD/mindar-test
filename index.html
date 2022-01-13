@@ -62,7 +62,7 @@
       startButton.addEventListener('click', function () {
         startRec().then(recordedChunks => {
           let recordedBlob = new Blob(recordedChunks, { type: 'video/mp4' });
-          downloadButton.href = `./${URL.createObjectURL(recordedBlob)}`;
+          downloadButton.href = `${location.origin}/${URL.createObjectURL(recordedBlob)}`;
           downloadButton.download = 'RecordedVideo.mp4';
         });
       }, false);
