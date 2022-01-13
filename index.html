@@ -6,6 +6,10 @@
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.0/dist/mindar-image-aframe.prod.js"></script>
   </head>
   <body>
+    <div class="header">
+      <div id="startButton">録画</div>
+      <div id="stopButton">停止</div>
+    </div>
     <a-scene mindar-image="imageTargetSrc: ./targets.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
         <img id="marker" src="./marker.jpg" />
@@ -19,12 +23,11 @@
         <a-gltf-model rotation="0 0 0" position="0 0 0.1" scale="0.005 0.005 0.005" src="#avatarModel" animation="property: position; to: 0 0.1 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate" />
       </a-entity>
     </a-scene>
-    <div class="footer">
-      <div id="startButton">録画</div>
-      <div id="stopButton">停止</div>
-    </div>
     <script>
       const canvas = document.querySelector('canvas');
+      const video = document.querySelector('video');
+      canvas.getContext('2d').drawImage(video, 0, 0);
+      
       // Optional frames per second argument
       const stream = canvas.captureStream(25);
       
@@ -69,14 +72,14 @@
       stopButton.addEventListener('click', stopRec, false);
     </script>
     <style>
-      .footer {
+      .header {
         display: flex;
         position: absolute;
         z-index: 10;
         top: 0;
       }
 
-      .footer > div, a {
+      .header > div, a {
         padding: 5px;
         margin-right: 5px;
         background-color: white;
