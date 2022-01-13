@@ -29,7 +29,7 @@
       // Optional frames per second argument
       const stream = canvas.captureStream(25);
       
-      const options = { mimeType: 'video/mp4' };
+      const options = { mimeType: 'video/webp' };
 
       function startRec() {
         let recorder = new MediaRecorder(stream, options);
