@@ -22,7 +22,6 @@
     <div class="footer">
       <div id="startButton">録画</div>
       <div id="stopButton">停止</div>
-      <a id="downloadButton" class="button">保存</a>
     </div>
     <script>
       const canvas = document.querySelector('canvas');
@@ -55,14 +54,16 @@
 
       const startButton = document.getElementById('startButton');
       const stopButton = document.getElementById('stopButton');
-      const downloadButton = document.getElementById('downloadButton');
 
       startButton.addEventListener('click', function () {
         startRec().then(recordedChunks => {
-          let recordedBlob = new Blob(recordedChunks, { type: 'video/mp4' });
-          downloadButton.href = URL.createObjectURL(recordedBlob);
-          downloadButton.download = 'RecordedVideo.mp4';
-          downloadButton.click();
+          let recordedBlob = new Blob(recordedChunks, { type: 'video/webm' });
+          const a = createElement('a');
+          a.style.display = 'none';
+          a.href = URL.createObjectURL(recordedBlob);
+          a.download = 'RecordedVideo.webm';
+          document.body.appendChild(a);
+          a.click();
         });
       }, false);
       stopButton.addEventListener('click', stopRec, false);
