@@ -38,6 +38,8 @@
         recorder.ondataavailable = event => data.push(event.data);
         recorder.start();
 
+        console.log('start');
+
         let stopped = new Promise((resolve, reject) => {
           recorder.onstop = resolve;
           recorder.onerror = event => reject(event.name);
@@ -48,6 +50,7 @@
 
       function stopRec() {
         stream.getTracks().forEach(track => track.stop());
+        console.log('stop');
       }
 
       const startButton = document.getElementById('startButton');
