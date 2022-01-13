@@ -22,7 +22,7 @@
     <div class="footer">
       <div id="startButton">録画</div>
       <div id="stopButton">停止</div>
-      <div id="downloadButton">保存</div>
+      <a id="downloadButton" class="button">保存</a>
     </div>
     <script>
       const canvas = document.querySelector('canvas');
@@ -76,10 +76,11 @@
         top: 0;
       }
 
-      .footer > div {
+      .footer > div, a {
         padding: 5px;
         margin-right: 5px;
         background-color: white;
+        cursor: pointer;
       }
     </style>
   </body>
