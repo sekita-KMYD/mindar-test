@@ -24,16 +24,14 @@
       </a-entity>
     </a-scene>
     <script>
-      const canvas = document.querySelector('canvas');
-      const video = document.querySelector('video');
-      canvas.getContext('2d').drawImage(video, 0, 0);
+      // const canvas = document.querySelector('canvas');
       
-      // Optional frames per second argument
-      const stream = canvas.captureStream(25);
+      // // Optional frames per second argument
+      // const stream = canvas.captureStream(25);
       
       const options = { mimeType: 'video/webm' };
 
-      function startRec() {
+      function startRec(stream) {
         let recorder = new MediaRecorder(stream, options);
         let data = [];
 
@@ -59,15 +57,26 @@
       const stopButton = document.getElementById('stopButton');
 
       startButton.addEventListener('click', function () {
-        startRec().then(recordedChunks => {
-          let recordedBlob = new Blob(recordedChunks, { type: 'video/webm' });
-          const a = document.createElement('a');
-          a.style.display = 'none';
-          a.href = URL.createObjectURL(recordedBlob);
-          a.download = 'RecordedVideo.webm';
-          document.body.appendChild(a);
-          a.click();
-        });
+        navigator.getDisplayMedia({ video: true }).then(stream => {
+          startRec(stream).then(recordedChunks => {
+            let recordedBlob = new Blob(recordedChunks, { type: 'video/webm' });
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = URL.createObjectURL(recordedBlob);
+            a.download = 'RecordedVideo.webm';
+            document.body.appendChild(a);
+            a.click();
+          });
+        })
+        // startRec().then(recordedChunks => {
+        //   let recordedBlob = new Blob(recordedChunks, { type: 'video/webm' });
+        //   const a = document.createElement('a');
+        //   a.style.display = 'none';
+        //   a.href = URL.createObjectURL(recordedBlob);
+        //   a.download = 'RecordedVideo.webm';
+        //   document.body.appendChild(a);
+        //   a.click();
+        // });
       }, false);
       stopButton.addEventListener('click', stopRec, false);
     </script>
